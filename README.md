@@ -1,20 +1,31 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Regatta Tactician
 
-# Run and deploy your AI Studio app
+A sailing regatta visualization tool demonstrating how wind shifts affect the geometry of the race course, laylines, and ladder rungs.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1ulUC7UeGVx7IhPLrMcFqoyTJacOhfpf5
+- Interactive wind and current controls (drag to adjust direction and speed)
+- Layline visualization with port/starboard tack calculations
+- Ladder rungs showing distance to mark
+- Start line bias and mark shift adjustments
+- A/B scenario comparison mode
+- Draggable yacht positions with tack toggle
+- Real-time polar diagram
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:** Node.js
 
+```bash
+npm install
+npm run dev
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Open http://localhost:3000 in your browser.
+
+## Build
+
+```bash
+npm run build
+npm run preview
+```

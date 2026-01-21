@@ -14,11 +14,11 @@ A sailing regatta visualization tool demonstrating how wind shifts affect the ge
 
 ## Run Locally
 
-**Prerequisites:** Node.js
+**Prerequisites:** [Bun](https://bun.sh)
 
 ```bash
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 Open http://localhost:3000 in your browser.
@@ -26,6 +26,6 @@ Open http://localhost:3000 in your browser.
 ## Build
 
 ```bash
-npm run build
-npm run preview
+bun run build
+bun run preview
 ```

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Regatta Tactician is a React/TypeScript sailing regatta visualization tool that demonstrates how wind shifts, current, and course geometry affect the race course. It renders laylines, ladder rungs, and allows comparing two scenarios (A/B comparison).
+The Tactician is a React/TypeScript sailing regatta visualization tool that demonstrates how wind shifts, current, and course geometry affect the race course. It renders laylines, ladder rungs, and allows comparing two scenarios (A/B comparison).
 
 ## Commands
 

@@ -67,18 +67,24 @@ function App() {
 
       {/* Main Map Area */}
       <div className="flex-1 h-full relative" ref={containerRef}>
-        <RegattaMap 
-            config={config} 
+        <RegattaMap
+            config={config}
             comparisonConfig={comparisonConfig}
-            width={dimensions.width} 
+            width={dimensions.width}
             height={dimensions.height}
-            onConfigChange={setConfig} 
+            onConfigChange={setConfig}
             boats={boats}
             onBoatsChange={setBoats}
         />
-        
+
+        {/* Title */}
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 text-center pointer-events-none">
+          <h1 className="text-3xl font-bold text-slate-800 tracking-tight">The Tactician</h1>
+          <p className="text-sm text-slate-500 mt-1">visualizes the playing field of a sailing regatta course</p>
+        </div>
+
         <div className="absolute bottom-6 right-6 bg-white/80 backdrop-blur px-4 py-2 rounded-lg text-xs text-slate-500 shadow-sm border border-white/50 pointer-events-none">
-            Regatta Tactician v1.6
+            v1.6
         </div>
       </div>
       

@@ -1,4 +1,4 @@
-# Regatta Tactician
+# The Tactician
 
 A sailing regatta visualization tool demonstrating how wind shifts affect the geometry of the race course, laylines, and ladder rungs.
 

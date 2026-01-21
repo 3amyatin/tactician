@@ -189,12 +189,70 @@ const RegattaMap: React.FC<Props> = ({ config, comparisonConfig, width, height, 
         }
     }
     
-    // C. Middle Wind Line
+    // C. Middle Wind Line (clipped to stay within laylines polygon)
     let windLine = null;
-    if (cfg.showWindLine) {
-        // Starts at Mark, goes downwind, limited to 1000m
-        const windLineLength = Math.min(cfg.courseLength, 1000);
-        const windLineEndWorld = projectPoint(markLocWorld, cfg.windDirection + 180, windLineLength);
+    if (cfg.showWindLine && leftCornerWorld && rightCornerWorld) {
+        const windAngle = (cfg.windDirection + 180) % 360;
+
+        // Find intersection with polygon edges (laylines and start line)
+        // Polygon: Pin -> leftCorner -> Mark -> rightCorner -> RC -> Pin
+        // Wind line from Mark going downwind - check intersections with:
+        // 1. Left layline segment: leftCorner -> Pin
+        // 2. Start line segment: Pin -> RC
+        // 3. Right layline segment: RC -> rightCorner
+
+        const candidates: Point[] = [];
+
+        // Helper to check line segment intersection
+        const segmentIntersect = (p1: Point, p2: Point, lineStart: Point, lineAngle: number): Point | null => {
+            // Get angle of segment p1->p2
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const segAngle = toDegrees(Math.atan2(dx, dy));
+            const intersection = intersectLines(p1, segAngle, lineStart, lineAngle);
+            if (!intersection) return null;
+
+            // Check if intersection is within segment bounds
+            const minX = Math.min(p1.x, p2.x) - 0.1;
+            const maxX = Math.max(p1.x, p2.x) + 0.1;
+            const minY = Math.min(p1.y, p2.y) - 0.1;
+            const maxY = Math.max(p1.y, p2.y) + 0.1;
+
+            if (intersection.x >= minX && intersection.x <= maxX &&
+                intersection.y >= minY && intersection.y <= maxY) {
+                return intersection;
+            }
+            return null;
+        };
+
+        // Check left layline (leftCorner -> Pin)
+        const leftInt = segmentIntersect(leftCornerWorld, pinLocWorld, markLocWorld, windAngle);
+        if (leftInt && leftInt.y < markLocWorld.y) candidates.push(leftInt);
+
+        // Check start line (Pin -> RC)
+        const startInt = segmentIntersect(pinLocWorld, rcLocWorld, markLocWorld, windAngle);
+        if (startInt && startInt.y < markLocWorld.y) candidates.push(startInt);
+
+        // Check right layline (RC -> rightCorner)
+        const rightInt = segmentIntersect(rcLocWorld, rightCornerWorld, markLocWorld, windAngle);
+        if (rightInt && rightInt.y < markLocWorld.y) candidates.push(rightInt);
+
+        // Pick the closest intersection point
+        let windLineEndWorld = markLocWorld;
+        let minDist = Infinity;
+        for (const pt of candidates) {
+            const d = Math.sqrt((pt.x - markLocWorld.x) ** 2 + (pt.y - markLocWorld.y) ** 2);
+            if (d < minDist && d > 1) { // d > 1 to avoid mark itself
+                minDist = d;
+                windLineEndWorld = pt;
+            }
+        }
+
+        // Fallback if no intersection found
+        if (minDist === Infinity) {
+            windLineEndWorld = projectPoint(markLocWorld, windAngle, cfg.courseLength);
+        }
+
         const windLineEnd = toScreen(windLineEndWorld);
         windLine = { p1: markLoc, p2: windLineEnd };
     }

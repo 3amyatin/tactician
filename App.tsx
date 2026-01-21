@@ -83,9 +83,9 @@ function App() {
           <p className="text-sm text-slate-500 mt-1">visualizes the playing field of a sailing regatta course</p>
         </div>
 
-        <div className="absolute bottom-6 right-6 bg-white/80 backdrop-blur px-4 py-2 rounded-lg text-xs text-slate-500 shadow-sm border border-white/50 pointer-events-none text-right">
-            <div>v1.6</div>
-            <div className="mt-1">© <a href="https://github.com/3amyatin" target="_blank" rel="noopener noreferrer" className="underline pointer-events-auto hover:text-slate-700">Dmitry Zamyatin</a></div>
+        <div className="absolute bottom-6 right-6 flex items-center gap-3 pointer-events-none">
+            <span className="text-xs text-slate-400">© <a href="https://github.com/3amyatin" target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 pointer-events-auto">Dmitry Zamyatin</a></span>
+            <span className="bg-white/80 backdrop-blur px-4 py-2 rounded-lg text-xs text-slate-500 shadow-sm border border-white/50">v1.6</span>
         </div>
       </div>
       

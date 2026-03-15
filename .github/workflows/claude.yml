@@ -1,0 +1,24 @@
+name: Claude
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+  issues:
+    types: [opened, assigned, labeled]
+
+jobs:
+  review:
+    if: github.event_name == 'pull_request'
+    uses: 3amyatin/.github/.github/workflows/claude-review.yml@main
+    secrets: inherit
+
+  assistant:
+    if: github.event_name != 'pull_request'
+    uses: 3amyatin/.github/.github/workflows/claude-assistant.yml@main
+    secrets: inherit

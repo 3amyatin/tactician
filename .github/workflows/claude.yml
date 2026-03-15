@@ -10,7 +10,7 @@ on:
   pull_request_review:
     types: [submitted]
   issues:
-    types: [opened, assigned, labeled]
+    types: [opened, edited, assigned, labeled]
 
 jobs:
   review:
@@ -18,7 +18,16 @@ jobs:
     uses: 3amyatin/.github/.github/workflows/claude-review.yml@main
     secrets: inherit
 
+  triage:
+    if: >
+      github.event_name == 'issues' &&
+      (github.event.action == 'opened' || github.event.action == 'edited')
+    uses: 3amyatin/.github/.github/workflows/claude-issue-triage.yml@main
+    secrets: inherit
+
   assistant:
-    if: github.event_name != 'pull_request'
+    if: >
+      github.event_name != 'pull_request' &&
+      !(github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'edited'))
     uses: 3amyatin/.github/.github/workflows/claude-assistant.yml@main
     secrets: inherit

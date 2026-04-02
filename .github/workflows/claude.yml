@@ -10,7 +10,7 @@ on:
   pull_request_review:
     types: [submitted]
   issues:
-    types: [opened, assigned, labeled]
+    types: [assigned, labeled]
 
 jobs:
   review:
@@ -39,46 +39,6 @@ jobs:
             For each issue found, post an inline comment on the specific line.
             Include code suggestions using ```suggestion blocks where appropriate.
             After all inline comments, post a summary review comment.
-
-  triage:
-    if: >
-      github.event_name == 'issues' &&
-      github.event.action == 'opened'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
-      id-token: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Triage Issue
-        uses: anthropics/claude-code-action@v1
-        with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          track_progress: true
-          prompt: |
-            Review this issue and perform the following:
-
-            1. Categorize the issue by adding exactly ONE of these labels:
-               - `bug` — something is broken or not working as expected
-               - `feature` — a new capability or enhancement request
-               - `question` — a question or request for clarification
-               - `docs` — documentation improvement or fix
-               - `chore` — maintenance, cleanup, or dependency update
-
-            2. If the issue description is clear and actionable, add the label `triage:ready`.
-               If it lacks detail or is ambiguous, add `triage:needs-info` and leave a comment
-               asking the author for the specific missing information.
-
-            3. Leave a brief comment summarizing:
-               - What category you assigned and why
-               - Whether the issue is actionable as-is
-
-            Be concise. Do not rewrite or reformat the issue.
 
   assistant:
     if: >
